@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hardsub Code</title>
+      <meta charset="utf-8" />
+      <meta name="description" content="Web GUI for making basic FFmpeg hardsub commands.">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <script src="https://apis.google.com/js/api.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <script>
+      function execute(){
+        var inputFilename = document.getElementById('inputFile').value;
+        var assFilename = document.getElementById('assFile').value;
+        var outputFilename = document.getElementById('outputFile').value;
+        if(document.getElementById("inputMP4").checked == true){
+            var inputExtension = ".mp4";
+        }
+        if(document.getElementById("inputMKV").checked == true){
+            var inputExtension = ".mkv";
+        }
+        if(document.getElementById("outputMP4").checked == true){
+            var outputExtension = ".mp4";
+        }
+        if(document.getElementById("outputMKV").checked == true){
+            var outputExtension = ".mkv";
+        }
+        var result = "ffmpeg -i " + inputFilename + inputExtension + " -c:a copy -vf subtitles=" + assFilename + ".ass -crf 17 " + outputFilename + outputExtension;
+        document.getElementById('result').innerHTML = result;
+      }
+      function copy(){
+      document.querySelector("#result").select();
+      document.execCommand('copy');
+    }
+  </script>
+  <style>
+    @media screen and (min-width: 601px) {
+      .main-div{
+        width: 500px;
+        margin: 20px auto;
+      }
+      .btn {
+      font-size: 1rem;
+      width: 100%
+      }
+      .form-control{
+        font-size: 1rem;
+      }
+      .logo {
+        padding: 3rem;
+      }
+      .logo-img{
+        width: 40%;
+      }
+    }
+    @media screen and (max-width: 600px) {
+      .main-div{
+        width: 100%;
+      }
+      .btn {
+      font-size: 1rem;
+      width: 100%;
+      }
+      .form-control{
+        font-size: 1rem;
+      }
+      .logo {
+        padding: 2rem;
+      }
+      .logo-img{
+        width: 60%;
+      }
+    }
+    .main-text{
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-div">
+    <div class="main-text">
+        <h1>
+            Hardsub Code
+        </h1>
+        <p>For use with the Ragtag method.</p>
+        <h4>How to Use</h4>
+        <p>
+            First, open up Command Prompt on the folder you're working on. Also make sure you have FFmpeg installed and included in PATH.
+            <br />
+            <img src="cmd.gif" width="100%"></img>
+            <br />
+            Then add in the filenames of your files here.
+            <br />
+            Copy the result and run it in Command Prompt.
+        </p>
+    </div>
+    <input class="form-control" id="inputFile" placeholder="Input filename" onkeyup="execute()">
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputMP4" onChange="execute()" checked>
+        <label class="form-check-label" for="inputMP4">
+          MP4
+        </label>
+      </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputMKV" onChange="execute()">
+        <label class="form-check-label" for="inputMKV">
+          MKV
+        </label>
+    </div>
+    <input class="form-control" id="assFile" placeholder="ASS filename" onkeyup="execute()">
+    <input class="form-control" id="outputFile" placeholder="Output filename" onkeyup="execute()">
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="outputMP4" onChange="execute()" checked>
+        <label class="form-check-label" for="outputMP4">
+          MP4
+        </label>
+      </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="outputMKV" onChange="execute()">
+        <label class="form-check-label" for="outputMKV">
+          MKV
+        </label>
+    </div>
+    <textarea id="result" class="form-control" rows="3"></textarea>
+    <button onclick="copy()" id="copyButton" class="btn btn-primary mb-3">Copy</button>
+  </div>
+  <div style="bottom: 15px;text-align: center;width: 100%">Hardsub Code formatter built by <a href="https://madekuji.github.io/">Madekuji-san</a> for <a href="https://www.youtube.com/channel/UCweNMiLJU3IsVUhZM3Uh0vg">Hololive Resort Subs</a>.
+  </div>
+</body>
+</html>
