@@ -40,7 +40,7 @@
       }
       function executearchiver(){
         var ytLink = document.getElementById('ytLink').value;
-        var result = 'yt-dlp -o "[%(upload_date)s] %(title)s [%(id)s]\%(title)s [%(id)s].%(ext)s" --sub-langs all --sub-format srv3 --write-subs --write-thumbnail --get-comments -f bestvideo[ext=mp4]+bestaudio[ext=m4a] ' + ytLink;
+        var result = 'yt-dlp -o "[%(upload_date)s] %(title)s [%(id)s]&#92;%(title)s [%(id)s].%(ext)s" --sub-langs all --sub-format srv3 --write-subs --write-thumbnail --get-comments -f bestvideo[ext=mp4]+bestaudio[ext=m4a] ' + ytLink;
         document.getElementById('resultarchiver').innerHTML = result;
       }
       function executegreenscreener1(){
