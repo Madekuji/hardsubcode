@@ -38,11 +38,6 @@
         var result = 'ffmpeg -i "' + inputFilename + inputExtension + '" -c:a copy -vf subtitles="' + assFilename + '.ass" -crf 17 "' + outputFilename + outputExtension + '"';
         document.getElementById('resulthardsubber').innerHTML = result;
       }
-      function executearchiver(){
-        var ytLink = document.getElementById('ytLink').value;
-        var result = 'yt-dlp -o "[%(upload_date)s] %(title)s [%(id)s]&#92;%(title)s [%(id)s].%(ext)s" --sub-langs all --sub-format srv3 --write-subs --write-thumbnail --get-comments -f bestvideo[ext=mp4]+bestaudio[ext=m4a] ' + ytLink;
-        document.getElementById('resultarchiver').innerHTML = result;
-      }
       function executegreenscreener1(){
         var inputFilenameGS = document.getElementById('inputFilenameGS').value;
         var timeresult = 'ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 -sexagesimal "' + inputFilenameGS + '.mp4"';
@@ -55,12 +50,13 @@
         var renderresult = 'ffmpeg -f lavfi -i color=color=0x00FF00:s=1920x1080 -t ' + videoDuration + ' -vf "format=pix_fmts=rgb32,ass="' + assFilenameGS + '.ass":fontsdir=fonts,format=pix_fmts=yuv420p" -crf 17 "' + outputFilenameGS + '.mp4"';
         document.getElementById('resultgreenscreener2').innerHTML = renderresult;
       }
+      function executelivearchiver(){
+        var streamLink = document.getElementById('streamLink').value;
+        var result = 'ytarchive --add-metadata --debug --threads 4 --write-description --write-thumbnail ' + streamLink + ' best';
+        document.getElementById('resultlivearchiver').innerHTML = result;
+      }
       function copyhardsubber(){
       document.querySelector("#resulthardsubber").select();
-      document.execCommand('copy');
-    }
-    function copyarchiver(){
-      document.querySelector("#resultarchiver").select();
       document.execCommand('copy');
     }
     function copygreenscreener1(){
@@ -69,6 +65,14 @@
     }
     function copygreenscreener2(){
       document.querySelector("#resultgreenscreener2").select();
+      document.execCommand('copy');
+    }
+    function copyarchiver(){
+      document.querySelector("#resultarchiver").select();
+      document.execCommand('copy');
+    }
+    function copylivearchiver(){
+      document.querySelector("#resultlivearchiver").select();
       document.execCommand('copy');
     }
   </script>
@@ -137,10 +141,13 @@
         <button class="nav-link active" id="hardsubber-tab" data-bs-toggle="tab" data-bs-target="#hardsubber" type="button" role="tab" aria-controls="hardsubber" aria-selected="true">Hardsubber</button>
       </li>
       <li class="nav-item" role="presentation">
+        <button class="nav-link" id="greenscreener-tab" data-bs-toggle="tab" data-bs-target="#greenscreener" type="button" role="tab" aria-controls="greenscreener" aria-selected="false">GreenScreener</button>
+      </li>
+      <li class="nav-item" role="presentation">
         <button class="nav-link" id="archiver-tab" data-bs-toggle="tab" data-bs-target="#archiver" type="button" role="tab" aria-controls="archiver" aria-selected="false">Archiver</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="greenscreener-tab" data-bs-toggle="tab" data-bs-target="#greenscreener" type="button" role="tab" aria-controls="greenscreener" aria-selected="false">GreenScreener</button>
+        <button class="nav-link" id="livearchiver-tab" data-bs-toggle="tab" data-bs-target="#livearchiver" type="button" role="tab" aria-controls="livearchiver" aria-selected="false">LiveArchiver</button>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -182,18 +189,10 @@
         <textarea id="resulthardsubber" class="form-control" rows="3" placeholder="Command goes here"></textarea>
         <button onclick="copyhardsubber()" id="copyButtonHardsubber" class="btn btn-primary mb-3">Copy</button>
       </div>
-      <div class="tab-pane fade" id="archiver" role="tabpanel" aria-labelledby="archiver-tab">
-        <h5>Archiver</h5>
-        <p>Create a yt-dlp command for downloading a video for archival.</p>
-        <input class="form-control" id="ytLink" placeholder="YouTube Link" onkeyup="executearchiver()">
-        <br/>
-        <textarea id="resultarchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
-        <button onclick="copyarchiver()" id="copyButtonArchiver" class="btn btn-primary mb-3">Copy</button>
-      </div>
       <div class="tab-pane fade" id="greenscreener" role="tabpanel" aria-labelledby="greenscreener-tab">
         <h5>GreenScreener</h5>
-        <p>Create a FFmpeg command that makes a green screen hardsub.</p>
-        <input class="form-control" id="inputFilenameGS" placeholder="Input video filename" onkeyup="executegreenscreener1()">
+        <p>Create an FFmpeg command that makes a green screen hardsub.</p>
+        <input class="form-control" id="inputFilenameGS" placeholder="Input MP4 filename" onkeyup="executegreenscreener1()">
         <br/>
         <textarea id="resultgreenscreener1" class="form-control" rows="3" placeholder="Get video duration command goes here"></textarea>
         <button onclick="copygreenscreener1()" id="copyButtonGreenScreener1" class="btn btn-primary mb-3">Copy</button>
@@ -201,10 +200,26 @@
         <br/>
         <input class="form-control" id="assFilenameGS" placeholder="ASS filename" onkeyup="executegreenscreener2()">
         <br/>
-        <input class="form-control" id="outputFilenameGS" placeholder="Output video filename" onkeyup="executegreenscreener2()">
+        <input class="form-control" id="outputFilenameGS" placeholder="Output MP4 filename" onkeyup="executegreenscreener2()">
         <br/>
         <textarea id="resultgreenscreener2" class="form-control" rows="4" placeholder="Render command goes here"></textarea>
         <button onclick="copygreenscreener2()" id="copyButtonGreenScreener2" class="btn btn-primary mb-3">Copy</button>
+      </div>
+      <div class="tab-pane fade" id="archiver" role="tabpanel" aria-labelledby="archiver-tab">
+        <h5>Archiver</h5>
+        <p>Create a yt-dlp command to download a video for archival.</p>
+        <input class="form-control" id="ytLink" placeholder="YouTube link" onkeyup="executearchiver()">
+        <br/>
+        <textarea id="resultarchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
+        <button onclick="copyarchiver()" id="copyButtonArchiver" class="btn btn-primary mb-3">Copy</button>
+      </div>
+      <div class="tab-pane fade" id="livearchiver" role="tabpanel" aria-labelledby="livearchiver-tab">
+        <h5>LiveArchiver</h5>
+        <p>Create a ytarchive command for downloading an ongoing livestream. Useful for unarchived streams.</p>
+        <input class="form-control" id="streamLink" placeholder="YouTube livestream link" onkeyup="executelivearchiver()">
+        <br/>
+        <textarea id="resultlivearchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
+        <button onclick="copylivearchiver()" id="copyButtonLiveArchiver" class="btn btn-primary mb-3">Copy</button>
       </div>
     </div>
   
