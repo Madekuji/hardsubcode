@@ -47,7 +47,7 @@
         var videoDuration = document.getElementById('videoDuration').value;
         var assFilenameGS = document.getElementById('assFilenameGS').value;
         var outputFilenameGS = document.getElementById('outputFilenameGS').value;
-        var renderresult = 'ffmpeg -f lavfi -i color=color=0x00FF00:s=1920x1080 -t ' + videoDuration + ' -vf "format=pix_fmts=rgb32,ass="' + assFilenameGS + '.ass":fontsdir=fonts,format=pix_fmts=yuv420p" -crf 17 "' + outputFilenameGS + '.mp4"';
+        var renderresult = 'ffmpeg -f lavfi -i color=color=0x00FF00:s=1920x1080 -t ' + videoDuration + ' -vf "format=pix_fmts=rgb32,ass=&#39' + assFilenameGS + '.ass&#39:fontsdir=fonts,format=pix_fmts=yuv420p" -crf 17 "' + outputFilenameGS + '.mp4"';
         document.getElementById('resultgreenscreener2').innerHTML = renderresult;
       }
       function executearchiver(){
