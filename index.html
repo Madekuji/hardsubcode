@@ -134,13 +134,15 @@
 </head>
 <body>
   <div class="main-div">
-
+    <!--HEADER-->
     <div class="main-text">
         <h1 style="padding-top: 0.5rem;">
             <img src="hscode.png" width="40rem" style="padding-bottom: 0.5rem;"/> Hardsub Code
         </h1>
         <p>Lots of useful video commands.</p>
     </div>
+
+    <!--TABS-->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="hardsubber-tab" data-bs-toggle="tab" data-bs-target="#hardsubber" type="button" role="tab" aria-controls="hardsubber" aria-selected="true">Hardsubber</button>
@@ -155,7 +157,10 @@
         <button class="nav-link" id="livearchiver-tab" data-bs-toggle="tab" data-bs-target="#livearchiver" type="button" role="tab" aria-controls="livearchiver" aria-selected="false">LiveArchiver</button>
       </li>
     </ul>
+
+    <!--TAB CONTENT-->
     <div class="tab-content" id="myTabContent">
+      <!--HARDSUBBER-->
       <div class="tab-pane fade show active" id="hardsubber" role="tabpanel" aria-labelledby="hardsubber-tab">
         <h5>Hardsubber</h5>
         <p>Create an FFmpeg command to hardsub an ASS file to a video.</p>
@@ -194,6 +199,8 @@
         <textarea id="resulthardsubber" class="form-control" rows="3" placeholder="Command goes here"></textarea>
         <button onclick="copyhardsubber()" id="copyButtonHardsubber" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--GREENSCREENER-->
       <div class="tab-pane fade" id="greenscreener" role="tabpanel" aria-labelledby="greenscreener-tab">
         <h5>GreenScreener</h5>
         <p>Create an FFmpeg command that makes a green screen hardsub.</p>
@@ -210,6 +217,8 @@
         <textarea id="resultgreenscreener2" class="form-control" rows="4" placeholder="Render command goes here"></textarea>
         <button onclick="copygreenscreener2()" id="copyButtonGreenScreener2" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--ARCHIVER-->
       <div class="tab-pane fade" id="archiver" role="tabpanel" aria-labelledby="archiver-tab">
         <h5>Archiver</h5>
         <p>Create a yt-dlp command to download a video for archival.</p>
@@ -218,6 +227,8 @@
         <textarea id="resultarchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
         <button onclick="copyarchiver()" id="copyButtonArchiver" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--LIVEARCHIVER-->
       <div class="tab-pane fade" id="livearchiver" role="tabpanel" aria-labelledby="livearchiver-tab">
         <h5>LiveArchiver</h5>
         <p>Create a ytarchive command for downloading an ongoing livestream. Useful for unarchived streams.</p>
@@ -230,6 +241,7 @@
   
   </div>
 
+  <!--FOOTER-->
   <div style="bottom: 15px;text-align: center;width: 100%">Hardsub Code formatter built by <a href="https://madekuji.github.io/">Madekuji-san</a> for <a href="https://www.youtube.com/channel/UCweNMiLJU3IsVUhZM3Uh0vg">Hololive Resort Subs</a>.
   </div>
 </body>
