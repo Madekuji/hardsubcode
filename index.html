@@ -11,6 +11,7 @@
   <script src="https://apis.google.com/js/api.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -60,6 +61,23 @@
         var result = 'ytarchive --add-metadata --debug --threads 4 --write-description --write-thumbnail ' + streamLink + ' best';
         document.getElementById('resultlivearchiver').innerHTML = result;
       }
+      function executeclipper(){
+        var ytLinkCL = document.getElementById('ytLinkCL').value;
+        var timestampStart = document.getElementById('timestampStart').value;
+        var timestampEnd = document.getElementById('timestampEnd').value;
+        if(document.getElementById("forceKeyframes").checked == true){
+            var forceKeyframes = "--force-keyframes-at-cuts ";
+        }
+        else{
+            var forceKeyframes = "";
+        }
+        var timestampStartSplit = timestampStart.split(':');
+        var timestampEndSplit = timestampEnd.split(':');
+        var timestampStartSeconds = (+timestampStartSplit[0]) * 60 * 60 + (+timestampStartSplit[1]) * 60 + (+timestampStartSplit[2]);
+        var timestampEndSeconds = (+timestampEndSplit[0]) * 60 * 60 + (+timestampEndSplit[1]) * 60 + (+timestampEndSplit[2]);  
+        var result = 'yt-dlp -f bestvideo[ext=mp4]+bestaudio[ext=m4a] --download-sections "*' + timestampStartSeconds + '-' + timestampEndSeconds + '" ' + forceKeyframes + ytLinkCL;
+        document.getElementById('resultclipper').innerHTML = result;
+      }
       function copyhardsubber(){
       document.querySelector("#resulthardsubber").select();
       document.execCommand('copy');
@@ -80,11 +98,15 @@
       document.querySelector("#resultlivearchiver").select();
       document.execCommand('copy');
     }
+    function copyclipper(){
+      document.querySelector("#resultclipper").select();
+      document.execCommand('copy');
+    }
   </script>
   <style>
     @media screen and (min-width: 601px) {
       .main-div{
-        width: 500px;
+        width: 550px;
         margin: 20px auto;
       }
       .btn {
@@ -134,13 +156,15 @@
 </head>
 <body>
   <div class="main-div">
-
+    <!--HEADER-->
     <div class="main-text">
         <h1 style="padding-top: 0.5rem;">
             <img src="hscode.png" width="40rem" style="padding-bottom: 0.5rem;"/> Hardsub Code
         </h1>
         <p>Lots of useful video commands.</p>
     </div>
+
+    <!--TABS-->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="hardsubber-tab" data-bs-toggle="tab" data-bs-target="#hardsubber" type="button" role="tab" aria-controls="hardsubber" aria-selected="true">Hardsubber</button>
@@ -154,8 +178,14 @@
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="livearchiver-tab" data-bs-toggle="tab" data-bs-target="#livearchiver" type="button" role="tab" aria-controls="livearchiver" aria-selected="false">LiveArchiver</button>
       </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="clipper-tab" data-bs-toggle="tab" data-bs-target="#clipper" type="button" role="tab" aria-controls="clipper" aria-selected="false">Clipper</button>
+      </li>
     </ul>
+
+    <!--TAB CONTENT-->
     <div class="tab-content" id="myTabContent">
+      <!--HARDSUBBER-->
       <div class="tab-pane fade show active" id="hardsubber" role="tabpanel" aria-labelledby="hardsubber-tab">
         <h5>Hardsubber</h5>
         <p>Create an FFmpeg command to hardsub an ASS file to a video.</p>
@@ -194,6 +224,8 @@
         <textarea id="resulthardsubber" class="form-control" rows="3" placeholder="Command goes here"></textarea>
         <button onclick="copyhardsubber()" id="copyButtonHardsubber" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--GREENSCREENER-->
       <div class="tab-pane fade" id="greenscreener" role="tabpanel" aria-labelledby="greenscreener-tab">
         <h5>GreenScreener</h5>
         <p>Create an FFmpeg command that makes a green screen hardsub.</p>
@@ -210,6 +242,8 @@
         <textarea id="resultgreenscreener2" class="form-control" rows="4" placeholder="Render command goes here"></textarea>
         <button onclick="copygreenscreener2()" id="copyButtonGreenScreener2" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--ARCHIVER-->
       <div class="tab-pane fade" id="archiver" role="tabpanel" aria-labelledby="archiver-tab">
         <h5>Archiver</h5>
         <p>Create a yt-dlp command to download a video for archival.</p>
@@ -218,6 +252,8 @@
         <textarea id="resultarchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
         <button onclick="copyarchiver()" id="copyButtonArchiver" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--LIVEARCHIVER-->
       <div class="tab-pane fade" id="livearchiver" role="tabpanel" aria-labelledby="livearchiver-tab">
         <h5>LiveArchiver</h5>
         <p>Create a ytarchive command for downloading an ongoing livestream. Useful for unarchived streams.</p>
@@ -226,10 +262,32 @@
         <textarea id="resultlivearchiver" class="form-control" rows="5" placeholder="Command goes here"></textarea>
         <button onclick="copylivearchiver()" id="copyButtonLiveArchiver" class="btn btn-primary mb-3">Copy</button>
       </div>
+
+      <!--CLIPPER-->
+      <div class="tab-pane fade" id="clipper" role="tabpanel" aria-labelledby="clipper-tab">
+        <h5>Clipper</h5>
+        <p>Create a clip from a YouTube video using yt-dlp.</p>
+        <input class="form-control" id="ytLinkCL" placeholder="YouTube link" onkeyup="executeclipper()">
+        <br/>
+        <label for="timestampStart">Start</label>
+        <input class="form-control html-duration-picker" id="timestampStart" onkeyup="executeclipper()">
+        &emsp;
+        <label for="timestampEnd">End</label>
+        <input class="form-control html-duration-picker" id="timestampEnd" onkeyup="executeclipper()">
+        &emsp;
+        <input class="form-check-input" type="checkbox" value="" id="forceKeyframes" onChange="executeclipper()">
+        <label class="form-check-label" for="forceKeyframes">Force keyframes at cut?</label>
+        <br/>
+        <br/>
+        <textarea id="resultclipper" class="form-control" rows="5" placeholder="Command goes here"></textarea>
+        <button onclick="copyclipper()" id="copyButtonClipper" class="btn btn-primary mb-3">Copy</button>
+      </div>
+
     </div>
   
   </div>
 
+  <!--FOOTER-->
   <div style="bottom: 15px;text-align: center;width: 100%">Hardsub Code formatter built by <a href="https://madekuji.github.io/">Madekuji-san</a> for <a href="https://www.youtube.com/channel/UCweNMiLJU3IsVUhZM3Uh0vg">Hololive Resort Subs</a>.
   </div>
 </body>
